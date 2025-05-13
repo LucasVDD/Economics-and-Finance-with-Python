@@ -29,10 +29,11 @@ while True:
 # Calculating delta 1 and delta 2
 
 d1 = (math.log(s/k) + ((r + (sigma**2)/2) * (T-t)))/(sigma * np.sqrt(T-t))
-print("d1 = ", d1)
 
 d2 = (math.log(s/k) + ((r - (sigma**2)/2) * (T-t)))/(sigma * np.sqrt(T-t))
-print("d2 = ", d2)
 
-C = (sp.norm.cdf(d1) * s) - (sp.norm.cdf(d2) * k * math.e**(-r * (T-t)))
-print("Call price = ", C)
+c = (sp.norm.cdf(d1) * s) - (sp.norm.cdf(d2) * k * math.e**(-r * (T-t)))
+print("Call price = ", c)
+
+p = -((sp.norm.cdf(-d1) * s) - (sp.norm.cdf(-d2) * k * math.e**(-r * (T-t))))
+print("Put price =", p)
