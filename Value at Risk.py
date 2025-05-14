@@ -1,20 +1,37 @@
-import math
 import numpy as np
-import random as rand
 import scipy.stats as ss
 
-# For now, value and volatility will correspond the expected location and scale parameters of our distribution.
+# To do:
+    # New goal: Insert ticker and scrape data from yahoo finance, then calculate mean, volatility and plot histogram.
+    # Then we will estimate nonparametrically and parametrically
 
-# I'd like to have the option to either: Manually input the mean and volatility OR Estimate it from a data set
+    # Nonparametric estimation will be done by finding the discrete data value below our desired threshhold. It can take any distribution
 
-# I.e A choice in the terminal between "Manual" or "Import" as inputs to the Var and ES/CVAR calculations.
-    # If manual input, allow distribution type to be picked
-    # If imported, estimate distribution and run comparison tests for normality.
+    # Parametric estimation will be done through the equation "VaR(a) = -Investment * (average + Z(a) * volatility)
 
-value = float(input("Input the Total Value: "))
-volatility = float(input("Input the Volatility ()"))
-confidence_level = float(input("Input a confidence level between 0 and 0.99:"))
-time = float(input("Enter the time horizon: "))
+    # For now, mean and volatility will be inputted manually.
 
+# Program Comments:
 
+# Variable Inputs
 
+while True:
+    try:
+        confidence_level = float(input("Input a confidence level between 0.90 and 0.999...: "))
+        if not (0.90 <= confidence_level < 1):
+            print("Confidence level must be greater than 0 and less than 1")
+            continue
+        value = float(input("Input the total value: "))
+        average_return = float(input("Input the average return: "))
+        volatility = float(input("Input the volatility as a decimal: "))
+        time = float(input("Enter the time horizon: "))
+        break
+    except ValueError:
+        print("Invalid input(s), please enter only floats and/or integers")
+
+# Calculations
+
+alpha = 1 - confidence_level
+
+value_at_risk = (-value * (average_return + (ss.norm.ppf(alpha)*(volatility)))) * np.sqrt(time)
+print("The ",time," day Value at Risk is: ", value_at_risk)
